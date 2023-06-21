@@ -16,18 +16,25 @@ describe('Test the Movies App', () => {
         await driver.get('http://localhost:3000/')
         await driver.findElement(By.id('add-movie-input')).sendKeys('The Godfather', Key.RETURN)
         await driver.findElement(By.css('input[type="checkbox"]')).click()
+        const watched = await driver.wait(until.elementLocated(By.id('message')), 1000)
         await driver.sleep(4000)
+        expect(await watched.getText()).toBe('Watched The Godfather')
         await driver.findElement(By.css('input[type="checkbox"]')).click()
+        const addedBack = await driver.wait(until.elementLocated(By.id('message')), 1000)
         await driver.sleep(4000)
-        const checkbox = await driver.wait(until.elementLocated(By.css('#movies-list li input')), 1000)
-        expect(await checkbox)
+        expect(await addedBack.getText()).toBe('Added back The Godfather')
+       
 
     })
     test ('delete movie', async () => {
         await driver.get('http://localhost:3000/')
         await driver.findElement(By.id('add-movie-input')).sendKeys('The Godfather', Key.RETURN)
-        await driver.findElement(By.css('button[class="delete-btn"]')).click()
         await driver.sleep(4000)
+        await driver.findElement(By.css('button[class="delete-btn"]')).click()
+        const deleted = await driver.wait(until.elementLocated(By.id('message')), 1000)
+        await driver.sleep(4000)
+        expect(await deleted.getText()).toBe('The Godfather deleted!')
+        
 
     })
     test('notification displayed', async () => {
